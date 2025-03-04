@@ -4,9 +4,9 @@ using FinancialExcelEditor.Utils;
 
 namespace FinancialExcelEditor.Controllers;
 
-public class RowController(ExcelService excelService)
+public static class RowController
 {
-    public void ProcessRows(IXLWorksheet worksheet)
+    public static void ProcessRows(IXLWorksheet worksheet)
     {
         List<int> rowsToDelete = [];
         List<string> installmentOperations = [];
@@ -20,7 +20,7 @@ public class RowController(ExcelService excelService)
                 var cellDateValue = cellColumnFourValue.GetDateTime();
                 var newDate = DateHelper.AddMonths(cellDateValue, 1);
                 row.Cell(4).Value = newDate;
-                excelService.ClearCreditCarRow(row);
+                ExcelService.ClearCreditCarRow(row);
             }
             else
             {
@@ -42,7 +42,7 @@ public class RowController(ExcelService excelService)
                 }
             }
         }
-        if (rowsToDelete.Count != 0) excelService.DeleteRow(worksheet, rowsToDelete);
+        if (rowsToDelete.Count != 0) ExcelService.DeleteRow(worksheet, rowsToDelete);
         Reports.PrintInstallmentOperations(installmentOperations);
     }
 }

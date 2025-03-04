@@ -2,20 +2,13 @@
 
 namespace FinancialExcelEditor.Services;
 
-public class ExcelService
+public class ExcelService(XLWorkbook workbook)
 {
-    private readonly XLWorkbook _workbook;
-
-    public ExcelService(XLWorkbook workbook)
-    {
-        _workbook = workbook;
-    }
-
     public List<(int Id, string Name)> GetWorksheetNames()
     {
         List<(int Id, string Name)> worksheets = [];
         var i = 1;
-        foreach (var ws in _workbook.Worksheets)
+        foreach (var ws in workbook.Worksheets)
         {
             worksheets.Add((i, ws.Name));
             i++;
@@ -25,7 +18,7 @@ public class ExcelService
 
     public IXLWorksheet GetWorksheet(string name)
     {
-        return _workbook.Worksheets.Worksheet(name);
+        return workbook.Worksheets.Worksheet(name);
     }
 
     public static IXLWorksheet DuplicateWorksheet(IXLWorksheet worksheet, string newName)
@@ -33,7 +26,7 @@ public class ExcelService
         return worksheet.CopyTo(newName);
     }
     
-    public void DeleteRow(IXLWorksheet worksheet, List<int> rowNumber){
+    public static void DeleteRow(IXLWorksheet worksheet, List<int> rowNumber){
         for (var j = rowNumber.Count - 1; j >= 0; j--)
             for (var k = 1; k <= 6; k++)
         {
@@ -41,15 +34,15 @@ public class ExcelService
         }
     }
 
-    public void ClearCreditCarRow(IXLRow row)
+    public static void ClearCreditCarRow(IXLRow row)
     {
         string[] creditCars = ["Itaú Black", "Itaú Platinum", "Nubank"];
         var creditCardUsed = row.Cell(2).Value.ToString();
-        if (creditCars.Contains(creditCardUsed)) row.Cell(2).Clear();
+        if (creditCars.Contains(creditCardUsed, StringComparer.OrdinalIgnoreCase)) row.Cell(2).Clear();
     }
     
     public void SaveWorkbook()
     {
-        _workbook.Save();
+        workbook.Save();
     }
 }
