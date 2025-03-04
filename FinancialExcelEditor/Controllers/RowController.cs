@@ -6,7 +6,7 @@ namespace FinancialExcelEditor.Controllers;
 
 public static class RowController
 {
-    public static void ProcessRows(IXLWorksheet worksheet)
+    public static void ProcessRows(IXLWorksheet worksheet, IExcelService excelService)
     {
         List<int> rowsToDelete = [];
         List<string> installmentOperations = [];
@@ -20,7 +20,7 @@ public static class RowController
                 var cellDateValue = cellColumnFourValue.GetDateTime();
                 var newDate = DateHelper.AddMonths(cellDateValue, 1);
                 row.Cell(4).Value = newDate;
-                ExcelService.ClearCreditCarRow(row);
+                excelService.ClearCreditCarRow(row);
             }
             else
             {
@@ -42,7 +42,7 @@ public static class RowController
                 }
             }
         }
-        if (rowsToDelete.Count != 0) ExcelService.DeleteRow(worksheet, rowsToDelete);
+        if (rowsToDelete.Count != 0) excelService.DeleteRow(worksheet, rowsToDelete);
         Reports.PrintInstallmentOperations(installmentOperations);
     }
 }

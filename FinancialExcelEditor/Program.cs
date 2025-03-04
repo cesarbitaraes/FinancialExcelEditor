@@ -9,9 +9,9 @@ try
 
     using var workbook = new XLWorkbook(filePath);
 
-    var inputHelper = new InputHelper();
-    var excelService = new ExcelService(workbook);
+    IExcelService excelService = new ExcelService(workbook);
     var sheetControler = new SheetController(excelService);
+    var inputHelper = new InputHelper();
 
     var selectedTab = sheetControler.GetSelectedWorksheet(inputHelper);
     if (selectedTab == null) return;
@@ -19,7 +19,7 @@ try
     var newTabCreated = sheetControler.DuplicateWorksheet(selectedTab, inputHelper);
 
     Console.WriteLine($"Aba '{newTabCreated}' criada com sucesso.");
-    RowController.ProcessRows(newTabCreated);
+    RowController.ProcessRows(newTabCreated, excelService);
     excelService.SaveWorkbook();
 
 }

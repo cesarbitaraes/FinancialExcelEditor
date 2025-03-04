@@ -4,7 +4,7 @@ using FinancialExcelEditor.Utils;
 
 namespace FinancialExcelEditor.Controllers;
 
-public class SheetController(ExcelService excelService)
+public class SheetController(IExcelService excelService)
 {
     public IXLWorksheet? GetSelectedWorksheet(InputHelper inputHelper)
     {
@@ -29,6 +29,6 @@ public class SheetController(ExcelService excelService)
         {
             newTabName = $"Cópia de {selectedTab.Name}";
         }
-        return ExcelService.DuplicateWorksheet(selectedTab, newTabName);
+        return excelService.DuplicateWorksheet(selectedTab, newTabName);
     }
 }

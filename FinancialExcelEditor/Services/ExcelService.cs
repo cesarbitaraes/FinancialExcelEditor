@@ -2,7 +2,7 @@
 
 namespace FinancialExcelEditor.Services;
 
-public class ExcelService(XLWorkbook workbook)
+public class ExcelService(XLWorkbook workbook) : IExcelService
 {
     public List<(int Id, string Name)> GetWorksheetNames()
     {
@@ -21,12 +21,12 @@ public class ExcelService(XLWorkbook workbook)
         return workbook.Worksheets.Worksheet(name);
     }
 
-    public static IXLWorksheet DuplicateWorksheet(IXLWorksheet worksheet, string newName)
+    public IXLWorksheet DuplicateWorksheet(IXLWorksheet worksheet, string newName)
     {
         return worksheet.CopyTo(newName);
     }
     
-    public static void DeleteRow(IXLWorksheet worksheet, List<int> rowNumber){
+    public void DeleteRow(IXLWorksheet worksheet, List<int> rowNumber){
         for (var j = rowNumber.Count - 1; j >= 0; j--)
             for (var k = 1; k <= 6; k++)
         {
@@ -34,7 +34,7 @@ public class ExcelService(XLWorkbook workbook)
         }
     }
 
-    public static void ClearCreditCarRow(IXLRow row)
+    public void ClearCreditCarRow(IXLRow row)
     {
         string[] creditCars = ["Itaú Black", "Itaú Platinum", "Nubank"];
         var creditCardUsed = row.Cell(2).Value.ToString();
