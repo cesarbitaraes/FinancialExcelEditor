@@ -10,7 +10,7 @@ public static class RowController
     {
         List<int> rowsToDelete = [];
         List<string> installmentOperations = [];
-        
+
         foreach (var row in worksheet.RowsUsed())
         {
             var cellColumnFourValue = row.Cell(4).Value;
@@ -31,18 +31,37 @@ public static class RowController
                     if (currentInstallment < totalInstallment)
                     {
                         var newInstallmentValue = currentInstallment + 1;
-                        installmentOperations.Add($"Compra '{row.Cell(1).Value}' teve sua parcela alterada de {currentInstallment} para {newInstallmentValue}/{totalInstallment}.");
+                        installmentOperations.Add(
+                            $"Compra '{row.Cell(1).Value}' teve sua parcela alterada de {currentInstallment} para {newInstallmentValue}/{totalInstallment}.");
                         row.Cell(6).Value = $"{newInstallmentValue}/{totalInstallment}";
                     }
                     else
                     {
-                        installmentOperations.Add($"Compra '{row.Cell(1).Value}' teve seu registro excluído pois foi finalizada: {currentInstallment}/{totalInstallment}.");
+                        installmentOperations.Add(
+                            $"Compra '{row.Cell(1).Value}' teve seu registro excluído pois foi finalizada: {currentInstallment}/{totalInstallment}.");
                         rowsToDelete.Add(row.RowNumber());
                     }
                 }
             }
         }
+
         if (rowsToDelete.Count != 0) excelService.DeleteRow(worksheet, rowsToDelete);
         Reports.PrintInstallmentOperations(installmentOperations);
+    }
+
+    public static void GenerateReport(IXLWorksheet worksheet)
+    {
+        var transfAnaItems = worksheet.RowsUsed()
+            .Where(row => row.Cell(2).Value.ToString().Equals("Transf. Ana"))
+            .Select(row => (row.Cell(1).Value.ToString(), row.Cell(5).Value.ToString()))
+            .ToList();
+
+        var blackCard = worksheet.Cell(15,10).Value.ToString();
+        var platinumCard = worksheet.Cell(16,10).Value.ToString();
+        
+        transfAnaItems.Add(("Itaú Black", blackCard));
+        transfAnaItems.Add(("Itaú Platinum", platinumCard));
+        
+        Reports.PrintReport(transfAnaItems, worksheet.ToString());
     }
 }

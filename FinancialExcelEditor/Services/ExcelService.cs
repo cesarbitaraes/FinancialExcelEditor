@@ -23,7 +23,9 @@ public class ExcelService(XLWorkbook workbook) : IExcelService
 
     public IXLWorksheet DuplicateWorksheet(IXLWorksheet worksheet, string newName)
     {
-        return worksheet.CopyTo(newName);
+        var newWorkSheet = worksheet.CopyTo(newName);
+        newWorkSheet.ShowGridLines = false;
+        return newWorkSheet;
     }
     
     public void DeleteRow(IXLWorksheet worksheet, List<int> rowNumber){

@@ -1,8 +1,8 @@
 ﻿namespace FinancialExcelEditor.Utils;
 
-public class InputHelper
+public static class InputHelper
 {
-    public string? GetValidInput(string message)
+    public static string? GetValidInput(string message)
     {
         Console.WriteLine(message);
         return Console.ReadLine();

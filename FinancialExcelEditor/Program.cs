@@ -1,31 +1,27 @@
-﻿using ClosedXML.Excel;
-using FinancialExcelEditor.Controllers;
-using FinancialExcelEditor.Services;
+﻿using FinancialExcelEditor.Actions;
 using FinancialExcelEditor.Utils;
 
 try
 {
-    const string filePath = "Controle Financeiro.xlsx";
+    var actionManager = new ActionManager();
+    
+    Console.WriteLine("Bem-vindo ao Financial Excel Editor\n");
+    Console.WriteLine("O que gostaria de executar:\n");
+    
+    var actionChosen = InputHelper.GetValidInput(
+        "1 - Gerar uma nova aba para um novo mês;\n" +
+                "2 - Gerar o relatório de gastos de um determinado mês;\n" +
+                "3 - Buscar alguma compra já realizada nesse ano.");
+    
+    if (string.IsNullOrWhiteSpace(actionChosen))
+    {
+        Console.WriteLine("É necessário informar uma ação. Encerrando o programa.");
+        return;
+    }
 
-    using var workbook = new XLWorkbook(filePath);
-
-    IExcelService excelService = new ExcelService(workbook);
-    var sheetControler = new SheetController(excelService);
-    var inputHelper = new InputHelper();
-
-    var selectedTab = sheetControler.GetSelectedWorksheet(inputHelper);
-    if (selectedTab == null) return;
-
-    var newTabCreated = sheetControler.DuplicateWorksheet(selectedTab, inputHelper);
-
-    Console.WriteLine($"Aba '{newTabCreated}' criada com sucesso.");
-    RowController.ProcessRows(newTabCreated, excelService);
-    excelService.SaveWorkbook();
-
+    actionManager.ExecuteAction(actionChosen);
 }
 catch (Exception ex)
 {
     Console.WriteLine($"Ocorreu um erro na execução do programa: {ex.Message}");
 }
-
-// ToDo: 01 - Gerar relatório
