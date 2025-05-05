@@ -56,11 +56,11 @@ public static class RowController
             .Select(row => (row.Cell(1).Value.ToString(), row.Cell(5).Value.ToString()))
             .ToList();
 
-        var blackCard = worksheet.Cell(15,10).Value.ToString();
-        var platinumCard = worksheet.Cell(16,10).Value.ToString();
+        var blackCardValue = worksheet.Cell(15,10).Value.ToString();
+        var platinumCardValue = worksheet.Cell(16,10).Value.ToString();
         
-        transfAnaItems.Add(("Itaú Black", blackCard));
-        transfAnaItems.Add(("Itaú Platinum", platinumCard));
+        transfAnaItems.Add(("Itaú Black", blackCardValue));
+        transfAnaItems.Add(("Itaú Platinum", platinumCardValue));
         
         Reports.PrintReport(transfAnaItems, worksheet.ToString());
     }
