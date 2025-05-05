@@ -49,7 +49,7 @@ public static class RowController
         Reports.PrintInstallmentOperations(installmentOperations);
     }
 
-    public static void GenerateReport(IXLWorksheet worksheet)
+    public static void CatchRollsToReport(IXLWorksheet worksheet)
     {
         var transfAnaItems = worksheet.RowsUsed()
             .Where(row => row.Cell(2).Value.ToString().Equals("Transf. Ana"))

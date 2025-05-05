@@ -7,7 +7,7 @@ public class ActionManager
     public ActionManager()
     {
         _actions.Add("1", new GenerateDuplicateWorksheetAction());
-        _actions.Add("2", new GenerateReportAction());
+        _actions.Add("2", new GenerateMonthlyReportAction());
         //_actions.Add("3", new SearchPurchaseAction());
     }
 

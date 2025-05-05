@@ -3,7 +3,7 @@ using FinancialExcelEditor.Utils;
 
 namespace FinancialExcelEditor.Actions;
 
-public class GenerateReportAction : IAction
+public class GenerateMonthlyReportAction : IAction
 {
     public void Execute()
     {
@@ -11,6 +11,6 @@ public class GenerateReportAction : IAction
 
         if (selectedTab == null) return;
         
-        RowController.GenerateReport(selectedTab);
+        RowController.CatchRollsToReport(selectedTab);
     }
 }
