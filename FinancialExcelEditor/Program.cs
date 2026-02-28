@@ -6,7 +6,7 @@ try
     var actionManager = new ActionManager();
     
     Console.WriteLine("Bem-vindo ao Financial Excel Editor\n");
-    Console.WriteLine("O que gostaria de executar:\n");
+    Console.WriteLine("Escolha a opção que deseja executar:\n");
     
     var actionChosen = InputHelper.GetValidInput(
         "1 - Gerar uma nova aba para um novo mês;\n" +
@@ -24,4 +24,8 @@ try
 catch (Exception ex)
 {
     Console.WriteLine($"Ocorreu um erro na execução do programa: {ex.Message}");
+}
+finally
+{
+    InputHelper.FinalMessage();
 }

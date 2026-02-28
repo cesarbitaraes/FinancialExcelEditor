@@ -10,7 +10,7 @@ public static class WorkbookHelper
     {
         const string filePath = "Controle Financeiro.xlsx";
         var workbook = new XLWorkbook(filePath);
-        IExcelService excelService = new ExcelService(workbook);
+        var excelService = new ExcelService(workbook);
         var sheetController = new SheetController(excelService);
 
         var selectedTab = sheetController.GetSelectedWorksheet();
