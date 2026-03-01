@@ -1,4 +1,4 @@
-﻿using ClosedXML.Excel;
+using ClosedXML.Excel;
 using FinancialExcelEditor.Services;
 using FinancialExcelEditor.Utils;
 
@@ -18,9 +18,9 @@ public static class RowController
             if (cellColumnFourValue.IsDateTime && cellColumnSixValue.ToString().Equals("1"))
             {
                 var cellDateValue = cellColumnFourValue.GetDateTime();
-                var newDate = DateHelper.AddMonths(cellDateValue, 1);
+                var newDate = cellDateValue.AddMonths(1);
                 row.Cell(4).Value = newDate;
-                excelService.ClearCreditCarRow(row);
+                excelService.ClearCreditCardRow(row);
             }
             else
             {
@@ -49,19 +49,19 @@ public static class RowController
         Reports.PrintInstallmentOperations(installmentOperations);
     }
 
-    public static void CatchRollsToReport(IXLWorksheet worksheet)
+    public static void CollectRowsForReport(IXLWorksheet worksheet)
     {
         var transfAnaItems = worksheet.RowsUsed()
             .Where(row => row.Cell(2).Value.ToString().Equals("Transf. Ana"))
-            .Select(row => (row.Cell(1).Value.ToString(), row.Cell(5).Value.ToString()))
+            .Select(row => (Name: row.Cell(1).Value.ToString(), Amount: row.Cell(5).Value.ToString()))
             .ToList();
 
-        var blackCardValue = worksheet.Cell(15,10).Value.ToString();
-        var platinumCardValue = worksheet.Cell(16,10).Value.ToString();
-        
-        transfAnaItems.Add(("Itaú Black", blackCardValue));
-        transfAnaItems.Add(("Itaú Platinum", platinumCardValue));
-        
-        Reports.PrintReport(transfAnaItems, worksheet.ToString());
+        var blackCardValue = worksheet.Cell(15, 10).Value.ToString();
+        var platinumCardValue = worksheet.Cell(16, 10).Value.ToString();
+
+        transfAnaItems.Add((Name: "Itaú Black", Amount: blackCardValue));
+        transfAnaItems.Add((Name: "Itaú Platinum", Amount: platinumCardValue));
+
+        Reports.PrintReport(transfAnaItems, worksheet.Name);
     }
 }

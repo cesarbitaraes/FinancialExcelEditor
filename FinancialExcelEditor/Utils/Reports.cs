@@ -12,22 +12,22 @@ public static class Reports
         }
     }
     
-    public static void PrintReport(List<(string, string)> items, string? worksheetName)
+    public static void PrintReport(List<(string Name, string Amount)> items, string worksheetName)
     {
         decimal total = 0;
-        
+
         Console.WriteLine($"\nGastos - {worksheetName} de {DateTime.Now.Year}:\n");
-        
+
         foreach (var item in items)
         {
-            if (decimal.TryParse(item.Item2, out var value))
+            if (decimal.TryParse(item.Amount, out var value))
             {
                 total += Math.Round(value, 2);
-                Console.WriteLine($"{item.Item1}: R${value:F2}");
+                Console.WriteLine($"{item.Name}: R${value:F2}");
             }
             else
             {
-                Console.WriteLine($"Valor inválido: item {item.Item2} com valor {item.Item1}");
+                Console.WriteLine($"Valor inválido: item {item.Name} com valor {item.Amount}");
             }
         }
         Console.WriteLine($"\nTotal: R${total:F2}");

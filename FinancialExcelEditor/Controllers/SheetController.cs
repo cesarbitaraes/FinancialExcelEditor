@@ -17,9 +17,19 @@ public class SheetController(IExcelService excelService)
         }
 
         var excelTabChosen = InputHelper.GetValidInput("Qual aba gostaria de selecionar?");
-        if (!string.IsNullOrWhiteSpace(excelTabChosen)) return excelService.GetWorksheet(excelTabChosen);
-        Console.WriteLine("É necessário informar uma aba. Encerrando o programa.");
-        return null;
+        if (string.IsNullOrWhiteSpace(excelTabChosen))
+        {
+            Console.WriteLine("É necessário informar uma aba. Encerrando o programa.");
+            return null;
+        }
+
+        if (!workSheetsNames.Any(ws => ws.Name.Equals(excelTabChosen, StringComparison.OrdinalIgnoreCase)))
+        {
+            Console.WriteLine($"Aba '{excelTabChosen}' não encontrada. Encerrando o programa.");
+            return null;
+        }
+
+        return excelService.GetWorksheet(excelTabChosen);
     }
     
     public IXLWorksheet DuplicateWorksheet(IXLWorksheet selectedTab)
