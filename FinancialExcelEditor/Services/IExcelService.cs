@@ -2,12 +2,12 @@
 
 namespace FinancialExcelEditor.Services;
 
-public interface IExcelService
+public interface IExcelService : IDisposable
 {
     List<(int Id, string Name)> GetWorksheetNames();
     IXLWorksheet GetWorksheet(string name);
     IXLWorksheet DuplicateWorksheet(IXLWorksheet worksheet, string newName);
     void DeleteRow(IXLWorksheet worksheet, List<int> rowNumber);
-    void ClearCreditCarRow(IXLRow row);
+    void ClearCreditCardRow(IXLRow row);
     void SaveWorkbook();
 }

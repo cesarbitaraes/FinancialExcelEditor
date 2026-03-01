@@ -1,20 +1,19 @@
-﻿using FinancialExcelEditor.Controllers;
-using FinancialExcelEditor.Utils;
+using FinancialExcelEditor.Controllers;
+using FinancialExcelEditor.Services;
 
 namespace FinancialExcelEditor.Actions;
 
-public class GenerateDuplicateWorksheetAction : IAction
+public class GenerateDuplicateWorksheetAction(SheetController sheetController, IExcelService excelService) : IAction
 {
     public void Execute()
     {
-        var (selectedTab, excelService) = WorkbookHelper.LoadWorkbookAndSelectSheet();
+        var selectedTab = sheetController.GetSelectedWorksheet();
 
         if (selectedTab == null) return;
 
-        var sheetControler = new SheetController(excelService);
-        var newTabCreated = sheetControler.DuplicateWorksheet(selectedTab);
+        var newTabCreated = sheetController.DuplicateWorksheet(selectedTab);
 
-        Console.WriteLine($"Aba '{newTabCreated}' criada com sucesso.");
+        Console.WriteLine($"Aba '{newTabCreated.Name}' criada com sucesso.");
         RowController.ProcessRows(newTabCreated, excelService);
         excelService.SaveWorkbook();
     }

@@ -1,16 +1,15 @@
-﻿using FinancialExcelEditor.Controllers;
-using FinancialExcelEditor.Utils;
+using FinancialExcelEditor.Controllers;
 
 namespace FinancialExcelEditor.Actions;
 
-public class GenerateMonthlyReportAction : IAction
+public class GenerateMonthlyReportAction(SheetController sheetController) : IAction
 {
     public void Execute()
     {
-        var (selectedTab, excelService) = WorkbookHelper.LoadWorkbookAndSelectSheet();
+        var selectedTab = sheetController.GetSelectedWorksheet();
 
         if (selectedTab == null) return;
-        
-        RowController.CatchRollsToReport(selectedTab);
+
+        RowController.CollectRowsForReport(selectedTab);
     }
 }
