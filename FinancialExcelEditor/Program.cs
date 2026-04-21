@@ -20,6 +20,7 @@ try
         .AddTransient<SheetController>()
         .AddTransient<GenerateDuplicateWorksheetAction>()
         .AddTransient<GenerateMonthlyReportAction>()
+        .AddTransient<SearchPurchasesAction>()
         .AddTransient<ActionManager>()
         .BuildServiceProvider();
 

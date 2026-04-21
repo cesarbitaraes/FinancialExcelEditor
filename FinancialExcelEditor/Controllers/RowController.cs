@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using ClosedXML.Excel;
 using FinancialExcelEditor.Services;
 using FinancialExcelEditor.Utils;
@@ -63,5 +64,42 @@ public static class RowController
         transfAnaItems.Add((Name: "Itaú Platinum", Amount: platinumCardValue));
 
         Reports.PrintReport(transfAnaItems, worksheet.Name);
+    }
+
+    public static List<(string Month, string Name, string Payment, string Date, string Amount, string Installment)>
+        SearchPurchases(List<IXLWorksheet> worksheets, string searchTerm)
+    {
+        var results = new List<(string Month, string Name, string Payment, string Date, string Amount, string Installment)>();
+
+        foreach (var worksheet in worksheets)
+        {
+            foreach (var row in worksheet.RowsUsed())
+            {
+                var description = row.Cell(1).Value.ToString();
+                if (!Regex.IsMatch(description, searchTerm, RegexOptions.IgnoreCase))
+                    continue;
+
+                var dateValue = row.Cell(4).Value;
+                var dateStr = dateValue.IsDateTime
+                    ? dateValue.GetDateTime().ToString("dd/MM/yyyy")
+                    : dateValue.ToString();
+
+                var amountValue = row.Cell(5).Value;
+                var amountStr = amountValue.IsNumber
+                    ? $"R${amountValue.GetNumber().ToString("F2", System.Globalization.CultureInfo.InvariantCulture)}"
+                    : amountValue.ToString();
+
+                results.Add((
+                    Month: worksheet.Name,
+                    Name: description,
+                    Payment: row.Cell(2).Value.ToString(),
+                    Date: dateStr,
+                    Amount: amountStr,
+                    Installment: row.Cell(6).Value.ToString()
+                ));
+            }
+        }
+
+        return results;
     }
 }

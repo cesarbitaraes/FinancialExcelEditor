@@ -24,6 +24,13 @@ public class ExcelService(AppSettings settings) : IExcelService
         return _workbook.Worksheets.Worksheet(name);
     }
 
+    public List<IXLWorksheet> GetMonthlyWorksheets()
+    {
+        return _workbook.Worksheets
+            .Where(ws => DateHelper.CheckPortugueseMonths(ws.Name))
+            .ToList();
+    }
+
     public IXLWorksheet DuplicateWorksheet(IXLWorksheet worksheet, string newName)
     {
         var newWorkSheet = worksheet.CopyTo(newName);
