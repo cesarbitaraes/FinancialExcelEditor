@@ -8,6 +8,7 @@ Ferramenta de linha de comando para automatizar tarefas recorrentes em planilhas
 |-------|-----------|
 | 1     | Gera uma nova aba para o mês seguinte, copiando a aba selecionada, incrementando parcelas e avançando datas de débito automático. |
 | 2     | Exibe o relatório de gastos do mês selecionado, listando transferências e totais dos cartões de crédito. |
+| 3     | Busca uma compra pelo nome em todas as abas de meses, exibindo os resultados em tabela com total acumulado. Aceita busca por regex. Digite um novo termo para nova busca ou pressione **ESPAÇO** para sair. |
 
 ## Requisitos
 
@@ -21,7 +22,7 @@ Edite `appsettings.json` antes de compilar (ou na pasta de saída após compilar
 ```json
 {
   "ExcelFilePath": "Controle Financeiro.xlsx",
-  "CreditCards": ["Itaú Black", "Itaú Platinum", "Nubank"]
+  "CreditCards": ["Nome do cartão 1", "Nome do cartão 2"]
 }
 ```
 
@@ -51,7 +52,8 @@ FinancialExcelEditor/
 │   ├── IAction.cs                          # Interface comum para as ações
 │   ├── ActionManager.cs                    # Despacha a ação escolhida pelo usuário
 │   ├── GenerateDuplicateWorksheetAction.cs # Ação 1: duplicar aba do mês
-│   └── GenerateMonthlyReportAction.cs      # Ação 2: relatório mensal
+│   ├── GenerateMonthlyReportAction.cs      # Ação 2: relatório mensal
+│   └── SearchPurchasesAction.cs            # Ação 3: busca de compras
 ├── Controllers/
 │   ├── RowController.cs                    # Processa linhas da planilha
 │   └── SheetController.cs                  # Seleciona e duplica abas

@@ -1,11 +1,12 @@
 namespace FinancialExcelEditor.Actions;
 
-public class ActionManager(GenerateDuplicateWorksheetAction duplicateWorksheetAction, GenerateMonthlyReportAction monthlyReportAction)
+public class ActionManager(GenerateDuplicateWorksheetAction duplicateWorksheetAction, GenerateMonthlyReportAction monthlyReportAction, SearchPurchasesAction searchPurchasesAction)
 {
     private readonly Dictionary<string, IAction> _actions = new()
     {
         { "1", duplicateWorksheetAction },
-        { "2", monthlyReportAction }
+        { "2", monthlyReportAction },
+        { "3", searchPurchasesAction }
     };
 
     public void ExecuteAction(string actionKey)
